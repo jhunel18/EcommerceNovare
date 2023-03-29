@@ -20,6 +20,7 @@ import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.Activi
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityMainBinding
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.DialogueAddProductBinding
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model.Product
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.utility.PreferenceUtility
 
 class MainActivity : AppCompatActivity() {
 

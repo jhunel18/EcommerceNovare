@@ -8,25 +8,30 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.snackbar.Snackbar
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityLoginBinding
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.utility.PreferenceUtility
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var register_uname:String
+    private lateinit var register_pass:String
     private lateinit var binding:ActivityLoginBinding
 
     private val launchRegister = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    )
+    { result ->
 
         val data = result.data
-        val username = data?.getStringExtra("register_username")
-        val password = data?.getStringExtra("register_password")
+        register_uname = data?.getStringExtra("register_username").toString()
+        register_pass = data?.getStringExtra("register_password").toString()
 
-        binding.usernametext.setText(username)
-        binding.passwordtext.setText(password)
+        binding.usernametext.setText(register_uname)
+        binding.passwordtext.setText(register_pass)
 
-//        Snackbar.make(binding.root,
-//            "Registered ${data!!.getStringExtra("register_username")}",
-//            Snackbar.LENGTH_LONG).show()
+        Snackbar.make(binding.root,
+            "Registered ${data!!.getStringExtra("register_username")}",
+            Snackbar.LENGTH_LONG).show()
+
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +46,6 @@ class LoginActivity : AppCompatActivity() {
                 RegisterActivity::class.java
             )
 
-//            startActivity(goToRegister)
             launchRegister.launch(goToRegister)
         }
 
@@ -61,6 +65,13 @@ class LoginActivity : AppCompatActivity() {
                 bundle.putString("bundle_username", username)
                 goToMain.putExtras(bundle)
 
+                //Dito nakalagay ayung Share preferences
+
+                PreferenceUtility(applicationContext).apply {
+                    saveStringPreferences("username", binding.usernametext.text.toString())
+                    saveStringPreferences("password", binding.passwordtext.text.toString())
+                }
+
                 startActivity(goToMain)
                 finish()
             }else{
@@ -68,7 +79,12 @@ class LoginActivity : AppCompatActivity() {
                     "Please provide admin/admin",
                     Snackbar.LENGTH_SHORT).show()
             }
-        }
+            }
+            //Dito nakalagay ayung Share preferences
+            PreferenceUtility(applicationContext).apply {
+                saveStringPreferences("username", binding.usernametext.text.toString())
+                saveStringPreferences("password", binding.passwordtext.text.toString())
+            }
     }
     override fun onBackPressed() {
         super.onBackPressed()
