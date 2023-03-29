@@ -1,6 +1,9 @@
 package ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.AbstractThreadedSyncAdapter
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +17,8 @@ import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAO
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAOStubImplementation
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityLoginBinding
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityMainBinding
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.DialogueAddProductBinding
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model.Product
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         loadProducts()
 
+        binding.fabAddProductButton.setOnClickListener{
+            showAddProductDialogue().show()
+        }
+
     }
 
     fun loadProducts(){
@@ -54,6 +63,29 @@ class MainActivity : AppCompatActivity() {
         swipeCallback.productAdapter = productAdapter
         itemTouchHelper = ItemTouchHelper(swipeCallback).apply {
             attachToRecyclerView(binding.productsList)
+        }
+    }
+
+    fun showAddProductDialogue():Dialog{
+        return this!!.let{
+            val builder = AlertDialog.Builder(it)
+            var dialogueAddProductBinding : DialogueAddProductBinding=
+                DialogueAddProductBinding.inflate(it.layoutInflater)
+            with(builder){
+                setPositiveButton("ADD",DialogInterface.OnClickListener{dialog,id ->
+                    val product = Product("")
+                    product.name = dialogueAddProductBinding.productName.text.toString()
+
+                    val productDAO = ProductDAOStubImplementation()
+                    productDAO.addProduct(product)
+                    productAdapter.addProduct(product)
+                })
+                setNegativeButton("CANCEL",DialogInterface.OnClickListener{dialog,id ->
+
+                })
+                setView(dialogueAddProductBinding.root)
+                create()
+            }
         }
     }
     override fun onBackPressed() {

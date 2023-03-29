@@ -2,7 +2,7 @@ package ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model
 
 import java.math.BigDecimal
 
-class Product(val name: String) {
+class Product(var name: String) {
     lateinit var id: String
     lateinit var price: BigDecimal
     lateinit var brand: String

@@ -3,6 +3,7 @@ package ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ProductItemBinding
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model.Product
@@ -15,7 +16,11 @@ class ProductAdapter(private val context:Context,
         productList.removeAt(position)
         notifyItemRemoved(position)
     }
+    fun addProduct(product: Product){
+        productList.add(0, product)
+        notifyItemInserted(0)
 
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductAdapter.ViewHolder {
         val productItemBinding = ProductItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,6 +38,10 @@ class ProductAdapter(private val context:Context,
 
         fun bindItems(product: Product){
             productItemBinding.productName.text = product.name
+
+            productItemBinding.viewProductButton.setOnClickListener {
+                Toast.makeText(context, "${product.name}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
