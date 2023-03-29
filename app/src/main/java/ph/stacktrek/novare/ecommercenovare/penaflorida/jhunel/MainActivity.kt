@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.adapters.ProductAdapter
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.adapters.SwipeCallback
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAO
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAOSQLLiteImplementation
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAOStubImplementation
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityLoginBinding
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.databinding.ActivityMainBinding
@@ -49,7 +50,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadProducts(){
-        productDAO = ProductDAOStubImplementation()
+//        productDAO = ProductDAOStubImplementation()
+        val productDAO = ProductDAOSQLLiteImplementation(applicationContext)
         productAdapter = ProductAdapter(applicationContext,
         productDAO.getProducts())
         with(binding.productsList){
@@ -76,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                     val product = Product("")
                     product.name = dialogueAddProductBinding.productName.text.toString()
 
-                    val productDAO = ProductDAOStubImplementation()
+//                    val productDAO = ProductDAOStubImplementation()
+                    val productDAO = ProductDAOSQLLiteImplementation(applicationContext)
                     productDAO.addProduct(product)
                     productAdapter.addProduct(product)
                 })

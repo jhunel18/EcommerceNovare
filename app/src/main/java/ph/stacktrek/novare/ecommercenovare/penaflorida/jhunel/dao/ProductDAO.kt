@@ -1,5 +1,10 @@
 package ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao
 
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.SQLException
+import android.provider.ContactsContract.Data
 import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model.Product
 
 
@@ -42,6 +47,63 @@ class ProductDAOStubImplementation: ProductDAO{
     //TODO("Not yet implemented")
     override fun deleteProduct(product: Product) {
 
+    }
+
+}
+
+class ProductDAOSQLLiteImplementation(var context:Context): ProductDAO{
+    override fun addProduct(product: Product) {
+        val databaseHandler=DatabaseHandler(context)
+        val db = databaseHandler.writableDatabase
+
+        val contentValues = ContentValues()
+
+        contentValues.put(DatabaseHandler.TABLE_PRODUCT_NAME, product.name)
+
+        var status = db.insert(DatabaseHandler.TABLE_PRODUCT,
+        null, contentValues)
+        db.close()
+    }
+
+    override fun getProducts(): ArrayList<Product> {
+        val databaseHandler=DatabaseHandler(context)
+        val db = databaseHandler.readableDatabase
+        var result = ArrayList<Product>()
+        var cursor:Cursor? = null
+
+        val columns = arrayOf(DatabaseHandler.TABLE_PRODUCT_ID,
+        DatabaseHandler.TABLE_PRODUCT_NAME)
+        try{
+            cursor = db.query(DatabaseHandler.TABLE_PRODUCT,
+            columns,
+            null,
+            null,
+            null,
+            null,
+            null)
+
+        }catch (sqlException:SQLException){
+            db.close()
+            return result
+        }
+
+        if(cursor.moveToFirst()){
+            do{
+                var product = Product("")
+                product.name = cursor.getString(1)
+                product.id = cursor.getInt(0).toString()
+                result.add(product)
+            }while(cursor.moveToNext())
+        }
+        return  result
+    }
+
+    override fun updateProduct(product: Product) {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteProduct(product: Product) {
+        TODO("Not yet implemented")
     }
 
 }
