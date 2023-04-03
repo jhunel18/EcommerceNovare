@@ -25,6 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
+        app:fabCustomSize="48dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

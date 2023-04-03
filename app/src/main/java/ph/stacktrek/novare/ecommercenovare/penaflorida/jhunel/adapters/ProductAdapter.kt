@@ -33,6 +33,11 @@ class ProductAdapter(private val context:Context,
 
     override fun getItemCount(): Int = productList.size
 
+    fun getProductAt(position: Int): Any {
+        return productList[position]
+    }
+
+
     inner class ViewHolder(private val productItemBinding: ProductItemBinding):
         RecyclerView.ViewHolder(productItemBinding.root){
 

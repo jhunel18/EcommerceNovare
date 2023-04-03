@@ -1,13 +1,18 @@
 package ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.adapters
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAO
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.dao.ProductDAOSQLLiteImplementation
+import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.model.Product
 
-class SwipeCallback (dragDirs: Int, swipeDirs: Int) :
+class SwipeCallback (var context: Context, dragDirs: Int, swipeDirs: Int) :
     ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
+    private var productDAO: ProductDAO? = null
     var productAdapter:ProductAdapter? = null
     var background: ColorDrawable = ColorDrawable(Color.BLACK)
 
@@ -20,8 +25,15 @@ class SwipeCallback (dragDirs: Int, swipeDirs: Int) :
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//        val position = viewHolder.adapterPosition
+//        productAdapter!!.deleteProduct(position)
+        productDAO = ProductDAOSQLLiteImplementation(context)
         val position = viewHolder.adapterPosition
+        val product = productAdapter!!.getProductAt(position)
+
         productAdapter!!.deleteProduct(position)
+        productDAO?.deleteProduct(product as Product)
+
     }
 
     override fun onChildDraw(

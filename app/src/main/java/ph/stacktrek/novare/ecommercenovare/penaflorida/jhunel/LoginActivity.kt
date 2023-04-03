@@ -12,31 +12,29 @@ import ph.stacktrek.novare.ecommercenovare.penaflorida.jhunel.utility.Preference
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var register_uname:String
-    private lateinit var register_pass:String
-    private lateinit var binding:ActivityLoginBinding
+    private lateinit var registerUsernameData:String
+    private lateinit var registerPasswordData:String
+
+    private lateinit var binding: ActivityLoginBinding
 
     private val launchRegister = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    )
-    { result ->
-
+    ) { result ->
         val data = result.data
-        register_uname = data?.getStringExtra("register_username").toString()
-        register_pass = data?.getStringExtra("register_password").toString()
+        registerUsernameData= data!!.getStringExtra("register_username").toString()
+        registerPasswordData = data.getStringExtra("register_password").toString()
 
-        binding.usernametext.setText(register_uname)
-        binding.passwordtext.setText(register_pass)
+
+        binding.usernametext.setText(registerUsernameData)
+        binding.passwordtext.setText(registerPasswordData)
 
         Snackbar.make(binding.root,
-            "Registered ${data!!.getStringExtra("register_username")}",
+            "Registered ${data.getStringExtra("register_username")}",
             Snackbar.LENGTH_LONG).show()
-
-        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -47,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
             )
 
             launchRegister.launch(goToRegister)
+
         }
 
         binding.loginButton.setOnClickListener {
@@ -54,18 +53,18 @@ class LoginActivity : AppCompatActivity() {
             var username = binding.usernametext.text.toString()
             var password = binding.passwordtext.text.toString()
 
-            if(username == "admin" && password == "admin") {
+
+            if(username == "admin" && password == "admin" || username == registerUsernameData && password == registerPasswordData ) {
                 val goToMain = Intent(
                     applicationContext,
                     MainActivity::class.java
                 )
+
                 goToMain.putExtra("username", username)
 
                 val bundle = Bundle()
                 bundle.putString("bundle_username", username)
                 goToMain.putExtras(bundle)
-
-                //Dito nakalagay ayung Share preferences
 
                 PreferenceUtility(applicationContext).apply {
                     saveStringPreferences("username", binding.usernametext.text.toString())
@@ -79,21 +78,14 @@ class LoginActivity : AppCompatActivity() {
                     "Please provide admin/admin",
                     Snackbar.LENGTH_SHORT).show()
             }
-            }
-            //Dito nakalagay ayung Share preferences
-            PreferenceUtility(applicationContext).apply {
-                saveStringPreferences("username", binding.usernametext.text.toString())
-                saveStringPreferences("password", binding.passwordtext.text.toString())
-            }
-    }
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val goToMain = Intent(applicationContext,
-            LoginActivity::class.java)
+        }
 
-        startActivity(goToMain)
-        finish()
+        PreferenceUtility(applicationContext).apply {
+            binding.usernametext.setText(getStringPreferences("username" ))
+            binding.passwordtext.setText(getStringPreferences("password" ))
+        }
 
     }
+
 
 }

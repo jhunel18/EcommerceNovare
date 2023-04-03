@@ -103,7 +103,14 @@ class ProductDAOSQLLiteImplementation(var context:Context): ProductDAO{
     }
 
     override fun deleteProduct(product: Product) {
-        TODO("Not yet implemented")
+
+        val databaseHandler=DatabaseHandler(context)
+        val db = databaseHandler.writableDatabase
+        val values = arrayOf("${product.id}")
+        println(values)
+        db.delete(DatabaseHandler.TABLE_PRODUCT, "${DatabaseHandler.TABLE_PRODUCT_ID}=?",values)
+        db.close()
+
     }
 
 }

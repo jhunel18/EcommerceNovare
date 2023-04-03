@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="#03A9F4"/>
 
         <View
             android:layout_width="match_parent"
@@ -29,7 +30,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="View Details"/>
+            android:text="View Details"
+            android:background="#188fff"
+            android:textColor="#fff"/>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
